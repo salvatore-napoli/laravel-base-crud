@@ -4,4 +4,4 @@
 	@section('title', 'Beers - Create')
 
 @section('body')
-	@include('beers.form', ['edit' => false])
+	@include('beers.form', ['edit' => true])

@@ -39,13 +39,7 @@ class BeersController extends Controller
     {
       $beersData = $request->all();
 
-      $validation = $request->validate(
-        [
-          'image' => 'max:2048',
-          'brand' => 'required|max:255',
-          'price' => 'required|digits_between:1,5',
-        ]
-      );
+      $this->validateForm($request);
 
       $newBeer = new Beer();
       $newBeer->fill($beersData);
@@ -73,9 +67,9 @@ class BeersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Beer $beer)
     {
-        //
+      return view('beers.edit', compact('beer'));
     }
 
     /**
@@ -85,9 +79,23 @@ class BeersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Beer $beer)
     {
-        //
+      $this->validateForm($request);
+
+      $data = $request->all();
+      $beer->update($data);
+
+      return redirect()->route('beers.show', compact('beer'));
+    }
+
+    protected function validateForm(Request $request) {
+      $validation = $request->validate(
+        [
+          'image' => 'max:2048',
+          'brand' => 'required|max:255',
+          'price' => 'required|digits_between:1,5',
+        ]);
     }
 
     /**
@@ -96,8 +104,10 @@ class BeersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Beer $beer)
     {
-        //
+      $beer->delete();
+
+      return redirect()->route('beers.index');
     }
 }

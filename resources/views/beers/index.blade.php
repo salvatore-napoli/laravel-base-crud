@@ -11,6 +11,7 @@
 	      <th scope="col">Image</th>
 	      <th scope="col">Brand</th>
 	      <th scope="col">Price</th>
+	      <th scope="col">Actions</th>
 	    </tr>
 	  </thead>
 	  <tbody>
@@ -24,6 +25,22 @@
 						</td>
 					<td>{{$beer->brand}}</td>
 					<td>{{$beer->price}}€</td>
+					<td>
+						<a href="{{ route('beers.show', compact('beer')) }}">
+							<i class="far fa-eye"></i>
+						</a>
+						<a href="{{ route('beers.edit', compact('beer')) }}">
+							<i class="far fa-edit"></i>
+						</a>
+						<form action="{{ route('beers.destroy', compact('beer')) }}" method="post">
+							@csrf
+							@method('DELETE')
+
+							<button type="submit" name="btn btn-danger">
+								<i class="far fa-trash-alt"></i>
+							</button>
+						</form>
+					</td>
 				</tr>
 			@endforeach
 	  </tbody>
